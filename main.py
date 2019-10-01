@@ -32,7 +32,11 @@ Future Features:
 
 import cv2 as cv
 import numpy as np
-import wolframalpha, cvlib
+import wolframalpha
+from imageai.Detection import ObjectDetection
+
+
+
 
 def searchQuery(query): #Query Wolfrom Alpha (a search engine) with the tag of the image
     wolfclient = wolframalpha.Client("VTHAHP-AQRU7QT7XY") #Wolfram API ID
@@ -40,10 +44,8 @@ def searchQuery(query): #Query Wolfrom Alpha (a search engine) with the tag of t
     return next(res.results).text #Return a text-response of the result with the tag 'Result'
 
 def getObject(img): #Object Detection
-    bbox, label, conf = cvlib.detect_common_objects(img) #Run the default TF model for object recognition
-    output_image = draw_bbox(img, bbox, label, conf) #Create an output showing the changes
-    plt.imshow(output_image) #Show the output
-    plt.show() #Display the output
+    pass
+    
 
 def run(): #Main function
     cam = cv.VideoCapture(0) #Capture output from the webcam (will likely need to changed for RPI)
@@ -51,11 +53,12 @@ def run(): #Main function
     while True: #Runs in a  continuous loop ............ True will be removed for a var based on user input
         count += 1 #Loop has run once
         ret_val, img = cam.read() #Read the webcam
-        img = cv.flip(img, 1) #Flip the image :)
+        # img = cv.flip(img, 1) #Flip the image :)
+        getObject(img)
         # cv.imshow('my webcam', img) #Show the image
         try: #In case it errors I don't want the program shutting down
             if(count == 15): #If the loop has run 15 times (15 frames... roughly)
-                getObject(img) #Run object detection
+                 #Run object detection
                 count = 0 #Reset count
             else: #If count != 15
                 pass
@@ -71,5 +74,5 @@ def run(): #Main function
     cv.destroyAllWindows()
 
 
-if name == "__main__":
+if __name__ == "__main__":
     run()
